@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time.com HTML Viewer</title>
+    <style>
+        .navbar {
+             background-color: #eee7e7;
+        color: white;
+             padding: 10px;
+           text-align: center;
+        }
+        .navbar-header {
+             font-size: 24px;
+            color: red;
+        }
+        .card-container {
+            display: flex;
+              flex-wrap: wrap;
+            justify-content: space-between;
+        margin-top: 20px;
+        }
+        .card {
+
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            padding: 10px;
+            width: calc(33.33% - 20px); 
+            box-sizing: border-box;
+        }
+        .card-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .card-link {
+            color: blue;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <span class="navbar-header">TIME</span>
+    </div>
+    <div class="card-container" id="cardContainer"></div>
+    <script>
+        fetch('/getTimeStories', { method: 'GET' }) // fetching data from backend server
+            .then(response => response.json())
+            .then(stories => {
+                         const cardContainer =document.getElementById('cardContainer');
+                         stories.forEach(story => {
+                       const card = document.createElement('div');
+                card.classList.add('card');
+                    const title = document.createElement('div');                    
+                title.classList.add('card-title');
+                     title.textContent = story.title;
+                    card.appendChild(title);
+                    const link = document.createElement('a');
+                     link.classList.add('card-link');                    
+                    link.href = story.link;
+                      link.textContent = 'Read More';
+                    link.target = '_blank';
+                    card.appendChild(link);
+                    cardContainer.appendChild(card);
+                });
+            })
+            .catch(error => {
+                console.error('error is occured', error);
+            });
+    </script>
+</body>
+</html>
